@@ -1,9 +1,9 @@
+import { Part } from "../Part/Part";
+
 export const Content = (props) => {
 	const content = props.content;
 	const contentElement = content.map((element, index) => (
-		<p key={index}>
-			{element.part} {element.exercises}
-		</p>
+		<Part key={index} element={element} />
 	));
 	return contentElement;
 };
