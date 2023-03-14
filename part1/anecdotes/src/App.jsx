@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 const App = () => {
@@ -12,15 +12,27 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0, 0])
 
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0, 0])
   const [selected, setSelected] = useState(0)
+  const [mostVoted, setMostVoted] = useState(-1)
+
+  useEffect(() => {
+    const higherAmountOfVotes = Math.max(...votes)
+    const mostVotedIndex = (el) => el === higherAmountOfVotes
+    setMostVoted(votes.findIndex(mostVotedIndex))
+    console.log(votes)
+    console.log(mostVoted)
+  }, [votes]);
 
   const getNextAnecdote = () => {
     const min = Math.ceil(0);
     const max = Math.floor(anecdotes.length - 1);
-    setSelected(Math.floor(Math.random() * (max - min + 1) + min));
-    console.log(selected)
+    let newSelection = Math.floor(Math.random() * (max - min + 1) + min)
+    while (selected == newSelection) {
+      newSelection = Math.floor(Math.random() * (max - min + 1) + min)
+    }
+    setSelected(newSelection);
   }
 
   const vote = () => {
@@ -31,10 +43,14 @@ const App = () => {
 
   return (
     <div className='app'>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <button onClick={getNextAnecdote}>next</button>
       <button onClick={vote}>vote</button>
+
+      <h2>Most voted anecdote</h2>
+      <p>{anecdotes[mostVoted]}</p>
     </div>
   )
 }
