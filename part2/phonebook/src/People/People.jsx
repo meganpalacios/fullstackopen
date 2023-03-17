@@ -1,5 +1,7 @@
+import './People.css'
+
 export const People = ({ people }) => (
-    <ul>
-        {people.map(person => <li key={person.name}>{person.name} {person.phone}</li>)}
+    <ul className="peopleListing">
+        {people.map(person => <li key={person.name}>{person.name} {person.number}</li>)}
     </ul>
 )
