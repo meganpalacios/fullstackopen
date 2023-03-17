@@ -1,6 +1,4 @@
-import { Header } from "./components/Header/Header";
 import { Course } from "./components/Course/Course";
-import { Total } from "./components/Total/Total";
 import './App.css';
 
 const App = () => {
