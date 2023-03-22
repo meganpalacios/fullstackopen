@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { InputField } from "./InputField/InputField";
 import { Error } from "./Error/Error";
 import { People } from "./People/People";
-import axios from "axios";
+import peopleService from "./services/people";
 import "./App.css";
 
 const App = () => {
@@ -10,10 +10,11 @@ const App = () => {
 	const [newName, setNewName] = useState("");
 	const [newPhone, setNewPhone] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [editMode, setEditMode] = useState(false);
+	const [currentId, setCurrentId] = useState(0);
 
 	useEffect(() => {
-		axios.get("http://localhost:3001/persons").then((response) => {
-			console.log("promise fulfilled");
+		peopleService.getAll().then((response) => {
 			setPeople(response.data);
 		});
 	}, []);
@@ -23,30 +24,61 @@ const App = () => {
 		if (errorMessage) setErrorMessage("");
 	};
 	const onChangePhone = (event) => setNewPhone(event.target.value);
-	const addContact = (event) => {
-		event.preventDefault();
+
+	const addContact = (newPerson) => {
 		const comparableArray = people.map((person) => person.name);
 		if (comparableArray.includes(newName)) {
 			setErrorMessage(`${newName} is already in your phonebook`);
 		} else {
-			setPeople(people.concat({ name: newName, phone: newPhone }));
+			peopleService.create(newPerson).then((response) => {
+				setPeople(people.concat(response.data));
+			});
 			setNewName("");
 			setNewPhone("");
+		}
+	};
+
+	const onEdit = (id) => {
+		setEditMode(true);
+		const contact = people.find((person) => person.id === id);
+		setNewName(contact.name);
+		setNewPhone(contact.number);
+		setCurrentId(contact.id);
+	};
+
+	const save = (event) => {
+		event.preventDefault();
+		const newPerson = { name: newName, number: newPhone };
+		if (!editMode) {
+			addContact(newPerson);
+		} else {
+			peopleService.update(currentId, newPerson).then((response) => {
+				setPeople(
+					people.map((person) => (person.id !== currentId ? person : response.data))
+				);
+			}).catch((error) => {
+				alert(`the contact was already deleted from server`)
+				setPeople(people.filter(n => n.id !== currentId))
+			})
+			setNewName("");
+			setNewPhone("");
+			setEditMode(false);
+			setCurrentId(0);
 		}
 	};
 
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			<form onSubmit={addContact}>
+			<form onSubmit={save}>
 				<h3>Add a new contact</h3>
 				<InputField label="Name" state={newName} onChange={onChangeName} />
 				<InputField label="Phone" state={newPhone} onChange={onChangePhone} />
 				<Error error={errorMessage} />
-				<button type="submit">add</button>
+				<button type="submit">save</button>
 			</form>
 			<h2>Numbers</h2>
-			<People people={people} />
+			<People people={people} onEdit={onEdit} />
 		</div>
 	);
 };
