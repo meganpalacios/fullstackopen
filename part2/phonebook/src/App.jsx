@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { InputField } from "./InputField/InputField";
 import { Error } from "./Error/Error";
+import { Success } from "./Success/Success";
 import { People } from "./People/People";
 import peopleService from "./services/people";
 import "./App.css";
@@ -10,6 +11,7 @@ const App = () => {
 	const [newName, setNewName] = useState("");
 	const [newPhone, setNewPhone] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [successMessage, setSuccessMessage] = useState("");
 	const [editMode, setEditMode] = useState(false);
 	const [currentId, setCurrentId] = useState(0);
 
@@ -22,6 +24,7 @@ const App = () => {
 	const onChangeName = (event) => {
 		setNewName(event.target.value);
 		if (errorMessage) setErrorMessage("");
+		if (successMessage) setSuccessMessage("");
 	};
 	const onChangePhone = (event) => setNewPhone(event.target.value);
 
@@ -33,6 +36,8 @@ const App = () => {
 			peopleService.create(newPerson).then((response) => {
 				setPeople(people.concat(response.data));
 			});
+			const selectedContact = newName
+			setSuccessMessage(`${selectedContact} has been added to your phonebook`)
 			setNewName("");
 			setNewPhone("");
 		}
@@ -57,8 +62,8 @@ const App = () => {
 					people.map((person) => (person.id !== currentId ? person : response.data))
 				);
 			}).catch((error) => {
-				alert(`the contact was already deleted from server`)
-				console.log(error)
+				const selectedContact = people.find(p => p.id === currentId)
+				setErrorMessage(`${selectedContact.name} was already deleted from server`)
 				setPeople(people.filter(p => p.id !== currentId))
 			})
 			setNewName("");
@@ -85,6 +90,7 @@ const App = () => {
 				<h3>Add a new contact</h3>
 				<InputField label="Name" state={newName} onChange={onChangeName} />
 				<InputField label="Phone" state={newPhone} onChange={onChangePhone} />
+				<Success message={successMessage} />
 				<Error error={errorMessage} />
 				<button type="submit">Save</button>
 			</form>
