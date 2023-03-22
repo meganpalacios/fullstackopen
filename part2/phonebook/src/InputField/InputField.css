@@ -1,0 +1,14 @@
+.input {
+	display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+}
+.input:nth-of-type(1) {
+    margin-bottom: 0.7rem;
+}
+
+.textfield {
+	border-radius: 8px;
+	padding: 0.6em 1.2em;
+}

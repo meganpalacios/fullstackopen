@@ -86,9 +86,9 @@ const App = () => {
 				<InputField label="Name" state={newName} onChange={onChangeName} />
 				<InputField label="Phone" state={newPhone} onChange={onChangePhone} />
 				<Error error={errorMessage} />
-				<button type="submit">save</button>
+				<button type="submit">Save</button>
 			</form>
-			<h2>Numbers</h2>
+			<h2>Contacts</h2>
 			<People people={people} onEdit={onEdit} onDelete={terminate} />
 		</div>
 	);

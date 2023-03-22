@@ -1,12 +1,11 @@
 import "./People.css";
 
 export const People = ({ people, onEdit, onDelete }) => (
-	<ul className="peopleListing">
+	<ul>
 		{people.map((person) => (
-			<div className="container" key={person.id}>
-				<li key={person.name}>
-					{person.name} {person.number}
-				</li>
+			<li className="container" key={person.id}>
+				{person.name} {person.number}
+
 				<div className="actions">
 					<button
 						className="button"
@@ -23,7 +22,7 @@ export const People = ({ people, onEdit, onDelete }) => (
 						Delete
 					</button>
 				</div>
-			</div>
+			</li>
 		))}
 	</ul>
 );
