@@ -58,7 +58,8 @@ const App = () => {
 				);
 			}).catch((error) => {
 				alert(`the contact was already deleted from server`)
-				setPeople(people.filter(n => n.id !== currentId))
+				console.log(error)
+				setPeople(people.filter(p => p.id !== currentId))
 			})
 			setNewName("");
 			setNewPhone("");
@@ -66,6 +67,16 @@ const App = () => {
 			setCurrentId(0);
 		}
 	};
+
+	const terminate = (id) => {
+		const selectedContact = people.find(p => p.id === id)
+		if (window.confirm('Do you want to delete ' + selectedContact.name + '?')) {
+			peopleService.terminate(id).then((response) => {
+				console.log(response.data)
+				setPeople(people.filter(p => p.id !== id))
+			})
+		}
+	}
 
 	return (
 		<div>
@@ -78,7 +89,7 @@ const App = () => {
 				<button type="submit">save</button>
 			</form>
 			<h2>Numbers</h2>
-			<People people={people} onEdit={onEdit} />
+			<People people={people} onEdit={onEdit} onDelete={terminate} />
 		</div>
 	);
 };

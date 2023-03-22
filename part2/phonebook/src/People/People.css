@@ -3,14 +3,23 @@
 }
 
 .container {
-    display: flex;
-    margin-bottom: 0.5rem;
-    justify-content: space-between;
-    gap: 1rem;
+	display: flex;
+	margin-bottom: 0.5rem;
+	justify-content: space-between;
+	gap: 2rem;
 }
 
-.edit {
+.actions {
+	display: flex;
+	gap: 1rem;
+}
+
+.button {
 	margin-bottom: 0;
 	font-size: 0.7em;
 	font-weight: 500;
+}
+
+.delete:hover {
+	border-color: red;
 }
