@@ -1,7 +1,6 @@
 import "./App.css";
 import { Country } from "./components/Country/Country";
 import countriesService from "./services/countries";
-import weatherService from "./services/weather";
 import { useState, useEffect } from "react";
 
 const App = () => {
@@ -9,18 +8,6 @@ const App = () => {
 	const [filteredResults, setFilteredResults] = useState([]);
 	const [resultCount, setResultCount] = useState(0);
 	const [weather, setWeather] = useState(null);
-
-	useEffect(() => {
-		const lat = filteredResults[0].latlng[0];
-		const lon = filteredResults[0].latlng[1];
-		if (resultCount === 1) {
-			weatherService.getWeather(lat, lon).then((response) => {
-				setWeather(response.data);
-			});
-		} else {
-			setWeather(null);
-		}
-	}, [resultCount]);
 
 	useEffect(() => {
 		countriesService.getFiltered(searchPrompt).then((response) => {
@@ -61,7 +48,7 @@ const App = () => {
 			/>
 			{filteredResults && resultCount > 10 && <p>Try being more specific</p>}
 			{resultCount === 1 && (
-				<Country country={filteredResults[0]} weather={weather} />
+				<Country country={filteredResults[0]} />
 			)}
 			{filteredResults && resultCount < 10 && resultCount > 1 && (
 				<ul className="resultList">

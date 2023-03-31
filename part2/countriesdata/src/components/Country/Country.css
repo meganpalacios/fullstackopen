@@ -1,8 +1,13 @@
+.country {
+	overflow: scroll;
+	height: 420px;
+}
+
 .languageList {
-    margin: auto;
-    width: 100px;
+	margin: auto;
+	width: 100px;
 }
 
 li {
-    text-align: start
+	text-align: start;
 }
