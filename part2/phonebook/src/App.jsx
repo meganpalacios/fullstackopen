@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { InputField } from "./InputField/InputField";
-import { Error } from "./Error/Error";
-import { Success } from "./Success/Success";
-import { People } from "./People/People";
+import { InputField } from "./components/InputField/InputField";
+import { Error } from "./components/Error/Error";
+import { Success } from "./components/Success/Success";
+import { People } from "./components/People/People";
 import peopleService from "./services/people";
 import "./App.css";
 
